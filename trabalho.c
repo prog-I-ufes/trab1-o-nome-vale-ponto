@@ -11,12 +11,23 @@ void testeAbrirArquivo(FILE * conf){
 	return;
 }
 
-void recebePatch(FILE *conf, char *treino, char *teste, char *predicao){
+void recebeConfig(FILE *conf, char *treino, char *teste, char *predicao, int x, int *k, char *tipo, float *r){
         conf = fopen("bateria_validacao/iris/config.txt", "r");
         fscanf(conf, "%s\n%s\n%s", treino, teste, predicao);
         printf("%s\n",treino);
         printf("%s\n",teste);
         printf("%s\n",predicao);
+		int w=0;
+		printf("o valor de x eh igual a %d\n",x);
+		k = (int *)malloc((x-3) * sizeof(int));
+		r = (float *)malloc((x-3) * sizeof(float));
+		tipo = (char *)malloc((x-3) * sizeof(char));
+		printf("\n");
+		for(w=3;w<x;w++)
+		{	
+		fscanf(conf, "%d, %c, %f",&k[(w-3)], &tipo[(w-3)], &r[(w-3)]);
+		printf("%d %c %.2f\n",k[(w-3)], tipo[(w-3)], r[(w-3)]);
+		}
 	return;
 }
 
@@ -32,31 +43,12 @@ int contaLinhas(FILE *conf){
         return x;
 }
 
-void recebeConfigCalculo(FILE *conf, int x, int *k, char *tipo, float *r){
-	conf = fopen("bateria_validacao/iris/config.txt", "r");	
-	int w=0;
-	printf("o valor de x eh igual a %d\n",x);
-	k = (int *)malloc((x-3) * sizeof(int));
-	r = (float *)malloc((x-3)* sizeof(float));
-	tipo = (char *)malloc((x-3)* sizeof(char));
-	printf("\n");
-	for(w=3;w<x;w++)
-	{	
-	fscanf(conf, "%d, %[^,]c %f", &k[w-3], &tipo[w-3], &r[w-3]);
-	printf("%d\n",k[w-3]);
-        printf("%c\n",tipo[w-3]);
-        printf("%f\n",r[w-3]);
-	}
-	return;
-
-}
-
 void liberarMemoria(FILE *conf, int *k, float *r, char *tipo){
 
 	fclose(conf);
-	free(k);
-	free(r);
-	free(tipo);
+	//free(k);
+	//free(r);
+	//free(tipo);
 	return;
 }
 
@@ -69,11 +61,9 @@ int main (){
         
         testeAbrirArquivo(conf);
         
-        x = contaLinhas(conf);       
+        x = contaLinhas(conf);
 
-        recebePatch(conf, treino, teste, predicao);        
-
-	recebeConfigCalculo(conf, x, k, tipo, r);
+        recebeConfig(conf, treino, teste, predicao, x, k, tipo, r);
 
 	liberarMemoria(conf, k, r, tipo);
         
