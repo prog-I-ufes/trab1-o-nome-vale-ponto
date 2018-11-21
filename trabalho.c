@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-void testeAbrirArquivo(FILE * conf){
+void testeAbrirArquivo(FILE * conf){ // a função tenta abrir o arquivo config.txt
         if (conf == NULL)
         {
                 printf("Erro na abertura de arquivo! \n O programa serah abortado...\n");
@@ -11,25 +11,25 @@ void testeAbrirArquivo(FILE * conf){
 	return;
 }
 
-void recebeConfig(FILE *conf, char *treino, char *teste, char *predicao, int x, int *k, char *tipo, float *r){
+void recebeConfig(FILE *conf, char *treino, char *teste, char *predicao, int x, int *k, char *tipo, float *r){ // a função recebe todas as linhas do arquivo config.txt
         conf = fopen("bateria_validacao/iris/config.txt", "r");
         fscanf(conf, "%s\n%s\n%s", treino, teste, predicao);
-     //   printf("%s\n",treino);
-     //   printf("%s\n",teste);
-     //   printf("%s\n",predicao);
+//   printf("%s\n",treino);
+//   printf("%s\n",teste);
+//   printf("%s\n",predicao);
 		int w=0;
-		//printf("o valor de x eh igual a %d\n",x);
-	//	printf("\n");
+//printf("o valor de x eh igual a %d\n",x);
+//	printf("\n");
 		for(w=3;w<x;w++)
 		{	
 		fscanf(conf, "%d, %c, %f",&k[(w-3)], &tipo[(w-3)], &r[(w-3)]);
-		//printf("%d %c %.2f\n",k[(w-3)], tipo[(w-3)], r[(w-3)]);
+//printf("%d %c %.2f\n",k[(w-3)], tipo[(w-3)], r[(w-3)]);
 		}
       fclose(conf);
 	return;
 }
 
-int contaLinhas(FILE *conf){
+int contaLinhas(FILE *conf){ // a funçao conta quantas linhas config.txt possui
         char tx1[30]; 
         int x=0;       
         while(!feof(conf)){
@@ -52,7 +52,7 @@ int main (){
         
         x = contaLinhas(conf);
          k = (int *)malloc((x-3) * sizeof(int));
-		   r = (float *)malloc((x-3) * sizeof(float));
+		   r = (float *)malloc((x-3) * sizeof(float)); // faz a alocação dos vetores que armazenarão os valores para configurar os calculos
 		   tipo = (char *)malloc((x-3) * sizeof(char));
         recebeConfig(conf, treino, teste, predicao, x, k, tipo, r);
 
