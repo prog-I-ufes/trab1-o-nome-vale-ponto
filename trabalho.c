@@ -45,7 +45,7 @@ int main (){
         FILE *conf; // *conf é um ponteiro do tipo arquivo para o arquivo config.txt
         int x=0, *k; // x é uma variável para contar quantas linhas config.txt possui; *k é um ponteiro para um vetor dinâmico que armazena os valores de k
 	     float *r; // *r é um ponteiro para um vetor dinãmico que armazena os valores de r quando eles existem
-        char treino[30], teste[30], predicao[30], *tipo; //
+        char treino[30], teste[30], predicao[30], *tipo; // Strings que armazenam os endereços em que paramêtros estão e um vetor de caracteres para a configuração dos calculos
         conf = fopen("bateria_validacao/iris/config.txt", "r");
         
         testeAbrirArquivo(conf);
