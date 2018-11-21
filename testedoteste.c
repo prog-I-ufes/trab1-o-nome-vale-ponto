@@ -60,18 +60,18 @@ int contaCaracteristica(FILE *arquivo)
                 fscanf(letra, 1, arquivo);
                 if(letra ==',')
                 {
-                        nVirgulas++
+                        nVirgulas++;
                 }
                 if(letra =='\n')
                 {
                         break;
                 }
-	nVirgulas++ //o numero de caracteristicas é o numero de virgulas +1   
+	nVirgulas++; //o numero de caracteristicas é o numero de virgulas +1   
         }
         return nVirgulas;
 
 }
-void lePlanilha(FILE *file, int nvirgulas);
+void lePlanilha(FILE *file, int nvirgulas)
 {
         int l=0,c=0;
         float *VFeatures;
@@ -95,12 +95,12 @@ void lePlanilha(FILE *file, int nvirgulas);
 
 int main (){
         FILE *conf,*teste; // *conf é um ponteiro do tipo arquivo para o arquivo config.txt
-        int x=0, *k, nvirguas=0; // x é uma variável para contar quantas linhas config.txt possui; *k é um ponteiro para um vetor dinâmico que armazena os valores de k
+        int x=0, *k, nvirgulas=0; // x é uma variável para contar quantas linhas config.txt possui; *k é um ponteiro para um vetor dinâmico que armazena os valores de k
 	float *r; // *r é um ponteiro para um vetor dinãmico que armazena os valores de r quando eles existem
         char treino[30], teste[30], predicao[30], *tipo; //
         
         conf = fopen("bateria_validacao/iris/config.txt", "r");
-        teste= fopen("dataset/iris_teste.csv", "r")
+        teste= fopen("dataset/iris_teste.csv", "r");
         nvirgulas = contaCaracteristica(teste);
         lePlanilha(*teste, nvirgulas);
 
@@ -110,7 +110,7 @@ int main (){
 
         recebeConfig(conf, treino, teste, predicao, x, k, tipo, r);
 
-	contaCaracteristica()
+	contaCaracteristica(Teste)
         liberarMemoria(conf, k, r, tipo);
         
 return 0;
