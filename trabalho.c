@@ -2,6 +2,8 @@
 #include<stdlib.h>
 #include<string.h>
 
+#define CONFIG "iris/config.txt"
+
 void testeAbrirArquivo(FILE * conf){ // a função tenta abrir o arquivo config.txt
         if (conf == NULL)
         {
@@ -12,11 +14,11 @@ void testeAbrirArquivo(FILE * conf){ // a função tenta abrir o arquivo config.
 }
 
 void recebeConfig(FILE *conf, char *treino, char *teste, char *predicao, int x, int *k, char *tipo, float *r){ // a função recebe todas as linhas do arquivo config.txt
-        conf = fopen("bateria_validacao/iris/config.txt", "r");
+        conf = fopen(CONFIG, "r");
         fscanf(conf, "%s\n%s\n%s", treino, teste, predicao);
-   printf("\n%s\n",treino);
+  // printf("\n%s\n",treino);
    printf("\n%s\n",teste);
-   printf("\n%s\n",predicao);
+ //  printf("\n%s\n",predicao);
 		int w=0;
 //printf("o valor de x eh igual a %d\n",x);
 //	printf("\n");
@@ -36,30 +38,30 @@ int contaLinhas(FILE *conf){ // a funçao conta quantas linhas config.txt possui
         fgets(tx1, 30, conf);
 	x++;
         }
-	x--;
-//	printf("o arquivo tem %d linhas\n",x);
+        x--;
+        //printf("o arquivo tem %d linhas\n",x);
         return x;
 }
 
 void recebeCSV(char *treino, char *teste, FILE *csvteste, FILE *csvtreino){
-   printf("\n\n\n%s\n\n\n",teste);
-   csvteste = fopen (teste,"r"); // o endereço da pasta que contem o arquivo está errado
-   //csvtreino = fopen (treino,"r");
-   char tx1[30];
-   int x=0;  
-   while(!feof(csvteste)){
-      fgets(tx1, 30, csvteste);
-   x++;
-      }
-   x--;
-   printf("\n\n\n\%d\n\n\n",x);
+        // printf("\n\n\n%s\n\n\n",teste);
+        csvteste = fopen (teste,"r"); // o endereço da pasta que contem o arquivo está errado
+        //csvtreino = fopen (treino,"r");
+        char tx1[30];
+        int x=0;  
+        while(!feof(csvteste)){
+                fgets(tx1, 30, csvteste);
+                x++;
+        }
+        x--;
+        printf("\n\n\n\%d\n\n\n",x);
     
    
 
 
-   fclose(csvteste);
-   //fclose(csvtreino);
-return;
+        fclose(csvteste);
+        //fclose(csvtreino);
+        return;
 }
 
 void liberaMemoria(int **kk, float **rr, char **titipo){
@@ -71,7 +73,7 @@ int main (){
         int x=0, *k, **kk=&k; // x é uma variável para contar quantas linhas config.txt possui; *k é um ponteiro para um vetor dinâmico que armazena os valores de k
 	     float *r, **rr=&r; // *r é um ponteiro para um vetor dinãmico que armazena os valores de r quando eles existem
         char treino[30], teste[30], predicao[30], *tipo, **titipo=&tipo; // Strings que armazenam os endereços em que paramêtros estão e um vetor de caracteres para a configuração dos calculos
-        conf = fopen("bateria_validacao/iris/config.txt", "r");
+        conf = fopen(CONFIG, "r");
         
         testeAbrirArquivo(conf);
         
