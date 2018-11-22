@@ -41,23 +41,41 @@ int contaLinhas(FILE *conf){ // a funçao conta quantas linhas config.txt possui
         return x;
 }
 
+void recebeCSV(char *treino, char *teste, FILE *csvteste, FILE *csvtreino){
+   csvteste = fopen (teste,"r");
+   //csvtreino = fopen (treino,"r");
+   int tx1;  
+   fscanf(csvteste, "%d", &tx1);
+   printf("%d",tx1); 
+
+
+   fclose(csvteste);
+   //fclose(csvtreino);
+return;
+}
+
+void liberaMemoria(int **kk, float **rr, char **titipo){
+   
+}
+
 int main (){
-        FILE *conf; // *conf é um ponteiro do tipo arquivo para o arquivo config.txt
-        int x=0, *k; // x é uma variável para contar quantas linhas config.txt possui; *k é um ponteiro para um vetor dinâmico que armazena os valores de k
-	     float *r; // *r é um ponteiro para um vetor dinãmico que armazena os valores de r quando eles existem
-        char treino[30], teste[30], predicao[30], *tipo; // Strings que armazenam os endereços em que paramêtros estão e um vetor de caracteres para a configuração dos calculos
+        FILE *conf, *csvteste, *csvtreino; // *conf é um ponteiro do tipo arquivo para o arquivo config.txt
+        int x=0, *k, **kk=&k; // x é uma variável para contar quantas linhas config.txt possui; *k é um ponteiro para um vetor dinâmico que armazena os valores de k
+	     float *r, **rr=&r; // *r é um ponteiro para um vetor dinãmico que armazena os valores de r quando eles existem
+        char treino[30], teste[30], predicao[30], *tipo, **titipo=&tipo; // Strings que armazenam os endereços em que paramêtros estão e um vetor de caracteres para a configuração dos calculos
         conf = fopen("bateria_validacao/iris/config.txt", "r");
         
         testeAbrirArquivo(conf);
         
         x = contaLinhas(conf);
-         k = (int *)malloc((x-3) * sizeof(int));
-		   r = (float *)malloc((x-3) * sizeof(float)); // faz a alocação dos vetores que armazenarão os valores para configurar os calculos
-		   tipo = (char *)malloc((x-3) * sizeof(char));
-        recebeConfig(conf, treino, teste, predicao, x, k, tipo, r);
-
-free(k); // os free estão funcionando, pois os frees tem que estar na mesma função que fez a malloc
-free(r);
-free(tipo);       
+            k = (int *)malloc((x-3) * sizeof(int));
+		      r = (float *)malloc((x-3) * sizeof(float)); // faz a alocação dos vetores que armazenarão os valores para configurar os calculos
+		      tipo = (char *)malloc((x-3) * sizeof(char));
+         recebeConfig(conf, treino, teste, predicao, x, k, tipo, r);
+         recebeCSV(treino, teste, csvteste, csvtreino);
+   free(k); 
+   free(r);
+   free(tipo);
+        //liberaMemoria(kk, rr, titipo);       
 return 0;
 }
