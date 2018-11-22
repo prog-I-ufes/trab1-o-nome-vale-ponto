@@ -14,9 +14,9 @@ void testeAbrirArquivo(FILE * conf){ // a função tenta abrir o arquivo config.
 void recebeConfig(FILE *conf, char *treino, char *teste, char *predicao, int x, int *k, char *tipo, float *r){ // a função recebe todas as linhas do arquivo config.txt
         conf = fopen("bateria_validacao/iris/config.txt", "r");
         fscanf(conf, "%s\n%s\n%s", treino, teste, predicao);
-//   printf("%s\n",treino);
-//   printf("%s\n",teste);
-//   printf("%s\n",predicao);
+   printf("\n%s\n",treino);
+   printf("\n%s\n",teste);
+   printf("\n%s\n",predicao);
 		int w=0;
 //printf("o valor de x eh igual a %d\n",x);
 //	printf("\n");
@@ -42,11 +42,19 @@ int contaLinhas(FILE *conf){ // a funçao conta quantas linhas config.txt possui
 }
 
 void recebeCSV(char *treino, char *teste, FILE *csvteste, FILE *csvtreino){
-   csvteste = fopen (teste,"r");
+   printf("\n\n\n%s\n\n\n",teste);
+   csvteste = fopen (teste,"r"); // o endereço da pasta que contem o arquivo está errado
    //csvtreino = fopen (treino,"r");
-   int tx1;  
-   fscanf(csvteste, "%d", &tx1);
-   printf("%d",tx1); 
+   char tx1[30];
+   int x=0;  
+   while(!feof(csvteste)){
+      fgets(tx1, 30, csvteste);
+   x++;
+      }
+   x--;
+   printf("\n\n\n\%d\n\n\n",x);
+    
+   
 
 
    fclose(csvteste);
