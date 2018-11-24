@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define CONFIG "iris/config.txt"
+#define CONFIG "vowels/config.txt"
 
 void testeAbrirArquivo(FILE * conf){ // a função tenta abrir o arquivo config.txt
         if (conf == NULL)
@@ -19,9 +19,9 @@ void recebeConfig(FILE *conf, char *treino, char *teste, char *predicao, int x, 
 /*printf("\n%s\n",treino);
 printf("\n%s\n",teste);
 printf("\n%s\n",predicao);*/
-		int w=0;
 //printf("o valor de x eh igual a %d\n",x);
 //printf("\n");
+                int w=0;
 		for(w=3;w<x;w++)
 		{	
 		fscanf(conf, "%d, %c, %f",&k[(w-3)], &tipo[(w-3)], &r[(w-3)]);
@@ -74,7 +74,7 @@ printf("\npredicao tem %d caracteres\n",*tamPredicao);*/
         return x;
 }
 
-void contaCSV(char *local, FILE *csvConta, long int *linConta, long int *colConta){ // a função lê o número de linhas e colunas do teste e do treino
+void contaCSV(char *local, FILE *csvConta, int *linConta, int *colConta){ // a função lê o número de linhas e colunas do teste e do treino
         csvConta = fopen (local,"r");
         char letra;  
         while(!feof(csvConta)){
@@ -105,16 +105,47 @@ void contaCSV(char *local, FILE *csvConta, long int *linConta, long int *colCont
         return;
 }
 
+void recebeTabela(FILE *csvTabela, char *local, int linTabela, int colTabela, float **posiTabela){
+        csvTabela = fopen (local,"r");
+        float val=0; int i=0,u=0; char le;
+        for(i=0;i<linTabela;i++){        
+                for(u=0;u<colTabela;u++){                
+                                fscanf(csvTabela, "%f", &val);
+                                posiTabela[i][u] = val;
+                                fscanf(csvTabela, "%c", &le);
+//printf(" %.2f ",posiTabela[i][u]);
+                }
+//printf("\n\n");
+        }
+}
 
+
+void libera(int *k, float *r, char *tipo, char *teste, char *treino, char *predicao, float **testeCSV, float **treinoCSV, int liNTeste, int liNTreino){
+   
+        int i=0;
+        for (i=0;i<(liNTeste);i++){
+                free(testeCSV[i]);
+        }
+        free(testeCSV);
+        for (i=0;i<(liNTreino);i++){
+                free(treinoCSV[i]);
+        }
+        free(treinoCSV);
+
+        free(treino);
+        free(teste);
+        free(predicao);
+        free(k); 
+        free(r);
+        free(tipo);
+}
 
 
 int main (){
         FILE *conf, *csvteste, *csvtreino; // *conf é um ponteiro do tipo arquivo para o arquivo config.txt
-      long int  linTeste = 0, colTeste = 0, colTreino = 0, linTreino = 0;
-        int tamTeste = 0, tamTreino = 0, tamPredicao = 0; 
-      long  int *liNTeste = &linTeste, *coLTeste = &colTeste, *coLTreino = &colTreino, *liNTreino = &linTreino; // declara ponteiros do tipo int
+        int  linTeste = 0, colTeste = 0, colTreino = 0, linTreino = 0, tamTeste = 0, tamTreino = 0, tamPredicao = 0; // variáveis que não precisam de ponteiro
         int x=0, *k;// x é uma variável para contar quantas linhas config.txt possui; *k é um ponteiro para um vetor dinâmico que armazena os valores de k
-	float *r; // *r é um ponteiro para um vetor dinãmico que armazena os valores de r quando eles existem
+	float *r, **testeCSV, **treinoCSV; // *r é um ponteiro para um vetor dinãmico que armazena os valores de r quando eles existem
         char *treino, *teste, *predicao, *tipo; // Strings que armazenam os endereços em que paramêtros estão e um vetor de caracteres para a configuração dos calculos
         conf = fopen(CONFIG, "r");
         
@@ -131,20 +162,31 @@ int main (){
             predicao = (char *)malloc((tamPredicao) * sizeof(char));
         
          recebeConfig(conf, treino, teste, predicao, x, k, tipo, r);
-         contaCSV(teste, csvteste, liNTeste, coLTeste);
+         contaCSV(teste, csvteste, &linTeste, &colTeste);
 
-         contaCSV(treino, csvtreino, liNTreino,coLTreino );
-/*printf("\n\n\n %ld eh o numero de linhas do teste\n\n\n",linTeste);
-printf("\n\n\n %ld eh o numero de colunas do teste\n\n\n",colTeste);    
-printf("\n\n\n %ld eh o numero de 2 linhas do treino\n\n\n",linTreino);
-printf("\n\n\n %ld eh o numero de 2 colunas do treino\n\n\n",colTreino);*/
-   
-   free(treino);
-   free(teste);
-   free(predicao);
-   free(k); 
-   free(r);
-   free(tipo);
-      
+         contaCSV(treino, csvtreino, &linTreino, &colTreino );
+         int i=0;
+                testeCSV = (float**) malloc (linTeste*(sizeof(float *)));
+                for (i=0; i<linTeste;i++){
+                
+                        testeCSV[i] = (float*) malloc (colTeste*(sizeof(float)));
+
+                }
+                treinoCSV = (float**) malloc (linTreino*(sizeof(float *)));
+                for (i=0; i<linTreino;i++){
+                
+                        treinoCSV[i] = (float*) malloc (colTreino*(sizeof(float)));
+
+                }
+
+        recebeTabela(csvteste, teste, linTeste, colTeste, testeCSV);
+//printf("\n\n\n");
+        recebeTabela(csvtreino, treino, linTreino, colTreino, treinoCSV);
+
+/*printf("\n\n\n %d eh o numero de linhas do teste\n\n\n",linTeste);
+printf("\n\n\n %d eh o numero de colunas do teste\n\n\n",colTeste);    
+printf("\n\n\n %d eh o numero de 2 linhas do treino\n\n\n",linTreino);
+printf("\n\n\n %d eh o numero de 2 colunas do treino\n\n\n",colTreino);*/
+libera(k, r, tipo, teste, treino, predicao, testeCSV, treinoCSV, linTeste, linTreino);
 return 0;
 }
