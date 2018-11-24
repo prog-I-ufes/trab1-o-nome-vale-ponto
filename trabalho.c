@@ -2,7 +2,10 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define CONFIG "vowels/config.txt"
+#include "knn.h"
+
+#define CONFIG "iris/config.txt"
+
 
 void testeAbrirArquivo(FILE * conf){ // a função tenta abrir o arquivo config.txt
         if (conf == NULL)
@@ -120,7 +123,7 @@ void recebeTabela(FILE *csvTabela, char *local, int linTabela, int colTabela, fl
 }
 
 
-void libera(int *k, float *r, char *tipo, char *teste, char *treino, char *predicao, float **testeCSV, float **treinoCSV, int liNTeste, int liNTreino){  // faz free em todos os ponteiros
+void libera(int *k, float *r, char *tipo, char *teste, char *treino, char *predicao, float **testeCSV, float **treinoCSV, int liNTeste, int liNTreino, float** resultadoCalculo, float **rotulo){  // faz free em todos os ponteiros
    
         int i=0;
         for (i=0;i<(liNTeste);i++){     //faz o free na matriz
@@ -131,6 +134,14 @@ void libera(int *k, float *r, char *tipo, char *teste, char *treino, char *predi
                 free(treinoCSV[i]);
         }
         free(treinoCSV);
+        for (i=0;i<(liNTeste);i++){
+                free(resultadoCalculo[i]);
+        }
+        free(resultadoCalculo);
+        for (i=0;i<(liNTeste);i++){
+                free(rotulo[i]);
+        }
+        free(rotulo);
 
         free(treino);
         free(teste);
@@ -142,9 +153,10 @@ void libera(int *k, float *r, char *tipo, char *teste, char *treino, char *predi
 
 
 int main (){
+        Resultado resultadoCalculo;
         FILE *conf, *csvteste, *csvtreino; // *conf é um ponteiro do tipo arquivo para o arquivo config.txt
         int  linTeste = 0, colTeste = 0, colTreino = 0, linTreino = 0, tamTeste = 0, tamTreino = 0, tamPredicao = 0; // variáveis que não precisam de ponteiro
-        int x=0, *k;// x é uma variável para contar quantas linhas config.txt possui; *k é um ponteiro para um vetor dinâmico que armazena os valores de k
+        int x=0, posi, *k;// x é uma variável para contar quantas linhas config.txt possui; *k é um ponteiro para um vetor dinâmico que armazena os valores de k
 	float *r, **testeCSV, **treinoCSV; // *r é um ponteiro para um vetor dinãmico que armazena os valores de r quando eles existem
         char *treino, *teste, *predicao, *tipo; // Strings que armazenam os endereços em que paramêtros estão e um vetor de caracteres para a configuração dos calculos
         conf = fopen(CONFIG, "r");
@@ -179,6 +191,19 @@ int main (){
            treinoCSV[i] = (float*) malloc (colTreino*(sizeof(float))); // aloca as colunas da matriz
 
    }
+   
+   resultadoCalculo.calculo = (float**) malloc (linTeste*(sizeof(float *)));  // aloca as linhas da matriz
+   for (i=0; i<linTeste;i++){
+
+           resultadoCalculo.calculo[i] = (float*) malloc (linTreino*(sizeof(float))); // aloca as colunas da matriz
+
+   }
+   resultadoCalculo.rotulo = (float**) malloc (linTeste*(sizeof(float *)));  // aloca as linhas da matriz
+   for (i=0; i<linTeste;i++){
+
+           resultadoCalculo.rotulo[i] = (float*) malloc (linTreino*(sizeof(float))); // aloca as colunas da matriz
+
+   }
 
         recebeTabela(csvteste, teste, linTeste, colTeste, testeCSV); // recebe os valores da tabela e armazenas na matriz correspondente
 //printf("\n\n\n");
@@ -188,6 +213,11 @@ int main (){
 printf("\n\n\n %d eh o numero de colunas do teste\n\n\n",colTeste);    
 printf("\n\n\n %d eh o numero de 2 linhas do treino\n\n\n",linTreino);
 printf("\n\n\n %d eh o numero de 2 colunas do treino\n\n\n",colTreino);*/
-libera(k, r, tipo, teste, treino, predicao, testeCSV, treinoCSV, linTeste, linTreino); // faz o free em todos os ponteiros
+for(posi=0;posi<(x-3);posi++){
+resultadoCalculo = calculaKNN(testeCSV, treinoCSV, colTeste, r, x, linTeste, linTreino, tipo, posi, resultadoCalculo);
+//printf("\n\n%.2f\n\n",resultadoCalculo.calculo[0][0]);
+printf("\n\n%f\n\n",resultadoCalculo.rotulo[0][0]);
+}
+libera(k, r, tipo, teste, treino, predicao, testeCSV, treinoCSV, linTeste, linTreino, resultadoCalculo.calculo, resultadoCalculo.rotulo); // faz o free em todos os ponteiros
 return 0;
 }
