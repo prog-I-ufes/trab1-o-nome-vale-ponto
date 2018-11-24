@@ -31,14 +31,14 @@ printf("\n%s\n",predicao);*/
 	return;
 }
 
-int contaConfig(FILE *conf, int *tamTreino, int *tamTeste, int* tamPredicao){ // a funçao conta quantas linhas config.txt possui
+int contaConfig(FILE *conf, int *tamTreino, int *tamTeste, int* tamPredicao){ 
         char letra; 
         int x=0, z =0;       
         while(!feof(conf)){
-        fscanf(conf, "%c", &letra);
+        fscanf(conf, "%c", &letra); 
                 if (letra == '\n')
                 {
-                        x++;
+                        x++; // conta quantas linhas config.txt possui
                 }
         }
         x--;
@@ -53,15 +53,15 @@ int contaConfig(FILE *conf, int *tamTreino, int *tamTeste, int* tamPredicao){ //
                 }
                 if (z==0)
                 {
-                        *tamTreino = *tamTreino + 1;
+                        *tamTreino = *tamTreino + 1;  // conta quantos caracteres tem o endereço do arquivo de treino
                 }
                 if (z==1)
                 {
-                        *tamTeste = *tamTeste + 1;
+                        *tamTeste = *tamTeste + 1; // conta quantos caracteres tem o endereço do arquivo de teste
                 }
                 if (z==2)
                 {
-                        *tamPredicao = *tamPredicao + 1;
+                        *tamPredicao = *tamPredicao + 1; // conta quantos caracteres tem o endereço do arquivo de predicao
                 }
         }
         *tamTreino = *tamTreino + 1;
@@ -105,14 +105,14 @@ void contaCSV(char *local, FILE *csvConta, int *linConta, int *colConta){ // a f
         return;
 }
 
-void recebeTabela(FILE *csvTabela, char *local, int linTabela, int colTabela, float **posiTabela){
+void recebeTabela(FILE *csvTabela, char *local, int linTabela, int colTabela, float **posiTabela){  // coloca os valores da tabela em uma matriz
         csvTabela = fopen (local,"r");
         float val=0; int i=0,u=0; char le;
         for(i=0;i<linTabela;i++){        
                 for(u=0;u<colTabela;u++){                
-                                fscanf(csvTabela, "%f", &val);
-                                posiTabela[i][u] = val;
-                                fscanf(csvTabela, "%c", &le);
+                                fscanf(csvTabela, "%f", &val);  // recebe o valor da coluna para uma variável auxiliar
+                                posiTabela[i][u] = val; // coloca na matriz o valor na variável auxiliar
+                                fscanf(csvTabela, "%c", &le); // recebe a virgula que separa cada valor da tabela e também recebe o caracter que indica fim da linha (trocadilho não proposital)
 //printf(" %.2f ",posiTabela[i][u]);
                 }
 //printf("\n\n");
@@ -120,13 +120,13 @@ void recebeTabela(FILE *csvTabela, char *local, int linTabela, int colTabela, fl
 }
 
 
-void libera(int *k, float *r, char *tipo, char *teste, char *treino, char *predicao, float **testeCSV, float **treinoCSV, int liNTeste, int liNTreino){
+void libera(int *k, float *r, char *tipo, char *teste, char *treino, char *predicao, float **testeCSV, float **treinoCSV, int liNTeste, int liNTreino){  // faz free em todos os ponteiros
    
         int i=0;
-        for (i=0;i<(liNTeste);i++){
+        for (i=0;i<(liNTeste);i++){     //faz o free na matriz
                 free(testeCSV[i]);
         }
-        free(testeCSV);
+        free(testeCSV);                 //faz o free na matriz
         for (i=0;i<(liNTreino);i++){
                 free(treinoCSV[i]);
         }
@@ -153,40 +153,41 @@ int main (){
         
         x = contaConfig(conf, &tamTreino, &tamTeste, &tamPredicao);
 
-            k = (int *)malloc((x-3) * sizeof(int));
-            r = (float *)malloc((x-3) * sizeof(float)); // faz a alocação dos vetores que armazenarão os valores para configurar os calculos
-            tipo = (char *)malloc((x-3) * sizeof(char));
+   k = (int *)malloc((x-3) * sizeof(int));
+   r = (float *)malloc((x-3) * sizeof(float)); // faz a alocação dos vetores que armazenarão os valores para configurar os calculos
+   tipo = (char *)malloc((x-3) * sizeof(char));
 
-            teste = (char *)malloc((tamTeste) * sizeof(char));
-            treino = (char *)malloc((tamTreino) * sizeof(char)); // faz a alocação dos vetores que armazenarão os valores para configurar os calculos
-            predicao = (char *)malloc((tamPredicao) * sizeof(char));
+   teste = (char *)malloc((tamTeste) * sizeof(char));
+   treino = (char *)malloc((tamTreino) * sizeof(char)); // faz a alocação dos vetores que armazenarão os valores para configurar os calculos
+   predicao = (char *)malloc((tamPredicao) * sizeof(char));
         
-         recebeConfig(conf, treino, teste, predicao, x, k, tipo, r);
-         contaCSV(teste, csvteste, &linTeste, &colTeste);
+        recebeConfig(conf, treino, teste, predicao, x, k, tipo, r); // recebe as informações contidas no config.txt
+         
+        contaCSV(teste, csvteste, &linTeste, &colTeste);
+        contaCSV(treino, csvtreino, &linTreino, &colTreino );
+        
+   int i=0;
+   testeCSV = (float**) malloc (linTeste*(sizeof(float *))); // aloca as linhas da matriz
+   for (i=0; i<linTeste;i++){
 
-         contaCSV(treino, csvtreino, &linTreino, &colTreino );
-         int i=0;
-                testeCSV = (float**) malloc (linTeste*(sizeof(float *)));
-                for (i=0; i<linTeste;i++){
-                
-                        testeCSV[i] = (float*) malloc (colTeste*(sizeof(float)));
+           testeCSV[i] = (float*) malloc (colTeste*(sizeof(float))); // aloca as colunas da matriz
 
-                }
-                treinoCSV = (float**) malloc (linTreino*(sizeof(float *)));
-                for (i=0; i<linTreino;i++){
-                
-                        treinoCSV[i] = (float*) malloc (colTreino*(sizeof(float)));
+   }
+   treinoCSV = (float**) malloc (linTreino*(sizeof(float *)));  // aloca as linhas da matriz
+   for (i=0; i<linTreino;i++){
 
-                }
+           treinoCSV[i] = (float*) malloc (colTreino*(sizeof(float))); // aloca as colunas da matriz
 
-        recebeTabela(csvteste, teste, linTeste, colTeste, testeCSV);
+   }
+
+        recebeTabela(csvteste, teste, linTeste, colTeste, testeCSV); // recebe os valores da tabela e armazenas na matriz correspondente
 //printf("\n\n\n");
-        recebeTabela(csvtreino, treino, linTreino, colTreino, treinoCSV);
+        recebeTabela(csvtreino, treino, linTreino, colTreino, treinoCSV); // recebe os valores da tabela e armazenas na matriz correspondente
 
 /*printf("\n\n\n %d eh o numero de linhas do teste\n\n\n",linTeste);
 printf("\n\n\n %d eh o numero de colunas do teste\n\n\n",colTeste);    
 printf("\n\n\n %d eh o numero de 2 linhas do treino\n\n\n",linTreino);
 printf("\n\n\n %d eh o numero de 2 colunas do treino\n\n\n",colTreino);*/
-libera(k, r, tipo, teste, treino, predicao, testeCSV, treinoCSV, linTeste, linTreino);
+libera(k, r, tipo, teste, treino, predicao, testeCSV, treinoCSV, linTeste, linTreino); // faz o free em todos os ponteiros
 return 0;
 }
