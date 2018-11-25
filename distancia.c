@@ -74,18 +74,18 @@ Resultado calculaKNN(float **dadoTeste, float **dadoTreino, int colTeste, float 
 
                                 case 'E':
                                         resultadoCalculo.calculo[ii][iii] = euclidiana(dadoTeste[ii], dadoTreino[iii], colTeste);
-                                        resultadoCalculo.rotulo[ii][iii] = dadoTeste[ii][(colTeste-1)];
+                                        resultadoCalculo.rotulo[ii][iii] = dadoTreino[iii][(colTeste-1)];
                                       
                                 break;
                                         
                                 case 'M':
                                         resultadoCalculo.calculo[ii][iii] = minkowsky(dadoTeste[ii], dadoTreino[iii], colTeste, r, posi);
-                                        resultadoCalculo.rotulo[ii][iii] = dadoTeste[ii][(colTeste-1)];
+                                        resultadoCalculo.rotulo[ii][iii] = dadoTreino[iii][(colTeste-1)];
                                 break;
 
                                 case 'C':
                                         resultadoCalculo.calculo[ii][iii] = chebyshev(dadoTeste[ii], dadoTreino[iii], colTeste);
-                                        resultadoCalculo.rotulo[ii][iii] = dadoTeste[ii][(colTeste-1)];
+                                        resultadoCalculo.rotulo[ii][iii] = dadoTreino[iii][(colTeste-1)];
                                 break;
 
                         }

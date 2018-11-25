@@ -156,7 +156,7 @@ int main (){
         Resultado resultadoCalculo;
         FILE *conf, *csvteste, *csvtreino; // *conf é um ponteiro do tipo arquivo para o arquivo config.txt
         int  linTeste = 0, colTeste = 0, colTreino = 0, linTreino = 0, tamTeste = 0, tamTreino = 0, tamPredicao = 0; // variáveis que não precisam de ponteiro
-        int x=0, posi, *k;// x é uma variável para contar quantas linhas config.txt possui; *k é um ponteiro para um vetor dinâmico que armazena os valores de k
+        int x=0, posi, pposi, *k;// x é uma variável para contar quantas linhas config.txt possui; *k é um ponteiro para um vetor dinâmico que armazena os valores de k
 	float *r, **testeCSV, **treinoCSV; // *r é um ponteiro para um vetor dinãmico que armazena os valores de r quando eles existem
         char *treino, *teste, *predicao, *tipo; // Strings que armazenam os endereços em que paramêtros estão e um vetor de caracteres para a configuração dos calculos
         conf = fopen(CONFIG, "r");
@@ -213,11 +213,27 @@ int main (){
 printf("\n\n\n %d eh o numero de colunas do teste\n\n\n",colTeste);    
 printf("\n\n\n %d eh o numero de 2 linhas do treino\n\n\n",linTreino);
 printf("\n\n\n %d eh o numero de 2 colunas do treino\n\n\n",colTreino);*/
+
+
 for(posi=0;posi<(x-3);posi++){
-resultadoCalculo = calculaKNN(testeCSV, treinoCSV, colTeste, r, x, linTeste, linTreino, tipo, posi, resultadoCalculo);
-//printf("\n\n%.2f\n\n",resultadoCalculo.calculo[0][0]);
-printf("\n\n%f\n\n",resultadoCalculo.rotulo[0][0]);
+
+	resultadoCalculo = calculaKNN(testeCSV, treinoCSV, colTeste, r, x, linTeste, linTreino, tipo, posi, resultadoCalculo);// armazena na variável os resultados dos calculos e os rotulos correspondentes
+
+	for(pposi=0;pposi<linTeste;pposi++){
+	i=0;
+	ordena(resultadoCalculo.calculo[pposi], i, (linTreino-1),resultadoCalculo.rotulo[pposi] );
+
+	}
+/*if(posi == 1){
+for(pposi=0;pposi<linTreino;pposi++){
+printf("\n\n%.2f  %.2f\n\n",resultadoCalculo.calculo[1][pposi],resultadoCalculo.rotulo[1][pposi]);
 }
+}*/
+//printf("\n\n%f\n\n",resultadoCalculo.rotulo[posi][0]);
+}
+
+
+
 libera(k, r, tipo, teste, treino, predicao, testeCSV, treinoCSV, linTeste, linTreino, resultadoCalculo.calculo, resultadoCalculo.rotulo); // faz o free em todos os ponteiros
 return 0;
 }
