@@ -24,7 +24,7 @@ float minkowsky(float *dadoTeste, float *dadoTreino, int colTeste, float *r, int
         for(i=0; i<(colTeste-1); i++){
         
                 if((dadoTeste[i] - dadoTreino[i]) < 0){
-                
+    
                         dis = dis + pow(((dadoTeste[i] - dadoTreino[i])*(-1)),r[posi]);
 
                 }
@@ -65,11 +65,11 @@ float chebyshev(float *dadoTeste, float *dadoTreino, int colTeste){
 }
 
 Resultado calculaKNN(float **dadoTeste, float **dadoTreino, int colTeste, float *r, int x, int linTeste, int linTreino, char *tipo, int posi, Resultado resultadoCalculo){    
-        int i=0,ii = 0, iii = 0; 
+        int i=0,ii = 0, iii = 0;
         for(ii=0;ii<linTeste;ii++){
 
                 for(iii=0;iii<linTreino;iii++){
-
+			
                         switch(tipo[posi]){
 
                                 case 'E':
