@@ -98,7 +98,7 @@ int* rotulador(Resultado resultado, int *k, int *rotulos, int linTeste,int linTr
 		}
 		d=0;
 		for(x=0;x<z;x++){
-			printf("\n%d %d\n",y[x], x);
+			//printf("\n%d %d\n",y[x], x);
 			if(y[x]>d){ // se a posição no vetor tiver valor maior então recebe aquela posição, os empates são resolvidos aqui, pois se for igual ele ignora, assim pegando o primeiro rotulo do empate
 
 				d = y[x]; // recebe o valor correspondente a quantas amostras possui aquele rotulo

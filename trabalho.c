@@ -156,9 +156,9 @@ void libera(int *k, float *r, char *tipo, char *teste, char *treino, char *predi
 int main (){
         Resultado resultadoCalculo;
         FILE *conf, *csvteste, *csvtreino; // *conf é um ponteiro do tipo arquivo para o arquivo config.txt
-        int  linTeste = 0, colTeste = 0, colTreino = 0, linTreino = 0, tamTeste = 0, tamTreino = 0, tamPredicao = 0; // variáveis que não precisam de ponteiro
-        int x=0, posi, pposi, *k, *rotulos;// x é uma variável para contar quantas linhas config.txt possui; *k é um ponteiro para um vetor dinâmico que armazena os valores de k
-	float *r, **testeCSV, **treinoCSV; // *r é um ponteiro para um vetor dinãmico que armazena os valores de r quando eles existem
+        int  linTeste = 0, colTeste = 0, colTreino = 0, linTreino = 0, tamTeste = 0, tamTreino = 0, tamPredicao = 0, i = 0, z = 0; // variáveis que não precisam de ponteiro
+        int x=0, posi, pposi, *k, *rotulos, **confusao;// x é uma variável para contar quantas linhas config.txt possui; *k é um ponteiro para um vetor dinâmico que armazena os valores de k
+	float *r, **testeCSV, **treinoCSV, acuracia = 0; // *r é um ponteiro para um vetor dinãmico que armazena os valores de r quando eles existem
         char *treino, *teste, *predicao, *tipo; // Strings que armazenam os endereços em que paramêtros estão e um vetor de caracteres para a configuração dos calculos
         conf = fopen(CONFIG, "r");
         
@@ -179,7 +179,6 @@ int main (){
         contaCSV(teste, csvteste, &linTeste, &colTeste);
         contaCSV(treino, csvtreino, &linTreino, &colTreino );
         
-   int i=0;
    testeCSV = (float**) malloc (linTeste*(sizeof(float *))); // aloca as linhas da matriz
    for (i=0; i<linTeste;i++){
 
@@ -206,6 +205,7 @@ int main (){
 
    }
 
+
    rotulos = (int*) malloc (linTeste*(sizeof(int)));  // aloca as linhas da matriz
 
         recebeTabela(csvteste, teste, linTeste, colTeste, testeCSV); // recebe os valores da tabela e armazenas na matriz correspondente
@@ -227,6 +227,23 @@ for(posi=0;posi<(x-3);posi++){
 
 	}
 	rotulos = rotulador(resultadoCalculo, k, rotulos, linTeste, linTreino, posi);
+	z = numeroDeRotulos(resultadoCalculo, linTeste, linTreino);
+	confusao = (int**) malloc (z*(sizeof(int *)));  // aloca as linhas da matriz
+   for (i=0; i<z;i++){
+
+           confusao[i] = (int *) malloc (z*(sizeof(int))); // aloca as colunas da matriz
+
+   }
+	comparador (testeCSV, rotulos, linTeste, colTeste, &acuracia, confusao, z);
+	
+/*for(i=0;i<z;i++){	
+
+	for(pposi=0;pposi<z;pposi++){
+		printf("%d ",confusao[i][pposi]);
+	}
+	printf("\n");
+}
+printf("\n"); */
 /*if(posi == 1){
 for(pposi=0;pposi<linTreino;pposi++){
 printf("\n\n%.2f  %.2f\n\n",resultadoCalculo.calculo[1][pposi],resultadoCalculo.rotulo[1][pposi]);
@@ -236,6 +253,10 @@ printf("\n\n%.2f  %.2f\n\n",resultadoCalculo.calculo[1][pposi],resultadoCalculo.
 /*	for(pposi=0;pposi<linTeste;pposi++){
 	printf("\nrotulo %d\n",rotulos[pposi]);
 	}*/
+	for (i=0;i<(z);i++){
+                free(confusao[i]);
+        }
+        free(confusao);
 }
 
 

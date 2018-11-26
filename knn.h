@@ -19,3 +19,5 @@ void ordena(float *vetor, int posicaoInicio, int posicaoFim, float *rotulo);
 int* rotulador(Resultado resultado, int *k, int *rotulos, int linTeste, int linTreino, int posi);
 
 float numeroDeRotulos(Resultado resultado, int linTeste, int linTreino);
+
+void comparador (float **testeCSV, int *rotulos, int linTeste, int colTeste, float *acuracia, int **confusao, int z);
