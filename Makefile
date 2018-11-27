@@ -1,10 +1,10 @@
 all: trab
 
-trab: trabalho.o distancia.o manipula.o confusao.o criaArquivo.o
-	gcc trabalho.o distancia.o manipula.o confusao.o criaArquivo.o -o trabalho -lm
+trab: trab1.o distancia.o manipula.o confusao.o criaArquivo.o
+	gcc trab1.o distancia.o manipula.o confusao.o criaArquivo.o -o trabalho -lm
 
-trabalho.o: trabalho.c
-	gcc -c trabalho.c -lm -g
+trab1.o: trab1.c
+	gcc -c trab1.c -lm -g
 
 distancia.o: distancia.c knn.h
 	gcc -c distancia.c -lm -g

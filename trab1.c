@@ -18,7 +18,7 @@ void testeAbrirArquivo(FILE * conf){ // a função tenta abrir o arquivo config.
 
 void recebeConfig(FILE *conf, char *treino, char *teste, char *predicao, int x, int *k, char *tipo, float *r){ // a função recebe todas as linhas do arquivo config.txt
         conf = fopen(CONFIG, "r");
-        fscanf(conf, "%s\n%s\n%s", treino, teste, predicao);
+        fscanf(conf, "%s\n%s\n%s", treino, teste, predicao); // armazena em variáveis os endereços do arquivo de teste, treino e predição
 /*printf("\n%s\n",treino);
 printf("\n%s\n",teste);
 printf("\n%s\n",predicao);*/
@@ -27,7 +27,7 @@ printf("\n%s\n",predicao);*/
                 int w=0;
 		for(w=3;w<x;w++)
 		{	
-		fscanf(conf, "%d, %c, %f",&k[(w-3)], &tipo[(w-3)], &r[(w-3)]);
+		fscanf(conf, "%d, %c, %f",&k[(w-3)], &tipo[(w-3)], &r[(w-3)]); // armazena em vetores os valores de k, tipo de cálculo e o valor de r
 //printf("%d %c %.2f\n",k[(w-3)], tipo[(w-3)], r[(w-3)]);
 		}
       fclose(conf);
@@ -128,10 +128,10 @@ void recebeTabela(FILE *csvTabela, char *local, int linTabela, int colTabela, fl
 void libera(int *k, float *r, char *tipo, char *teste, char *treino, char *predicao, float **testeCSV, float **treinoCSV, int liNTeste, int liNTreino, float** resultadoCalculo, float **rotulo, int *rotulos){  // faz free em todos os ponteiros
    
         int i=0;
-        for (i=0;i<(liNTeste);i++){     //faz o free na matriz
+        for (i=0;i<(liNTeste);i++){     
                 free(testeCSV[i]);
         }
-        free(testeCSV);                 //faz o free na matriz
+        free(testeCSV);                 
         for (i=0;i<(liNTreino);i++){
                 free(treinoCSV[i]);
         }
@@ -166,7 +166,7 @@ int main (){
         
         testeAbrirArquivo(conf);
         
-        x = contaConfig(conf, &tamTreino, &tamTeste, &tamPredicao);
+        x = contaConfig(conf, &tamTreino, &tamTeste, &tamPredicao); // recebe o número de linhas que config.txt possui
 
    k = (int *)malloc((x-3) * sizeof(int));
    r = (float *)malloc((x-3) * sizeof(float)); // faz a alocação dos vetores que armazenarão os valores para configurar os calculos
@@ -178,8 +178,8 @@ int main (){
         
         recebeConfig(conf, treino, teste, predicao, x, k, tipo, r); // recebe as informações contidas no config.txt
          
-        contaCSV(teste, csvteste, &linTeste, &colTeste);
-        contaCSV(treino, csvtreino, &linTreino, &colTreino );
+        contaCSV(teste, csvteste, &linTeste, &colTeste);	// conta quantas linhas e colunas o arquivo de teste possui
+        contaCSV(treino, csvtreino, &linTreino, &colTreino );  // conta quantas linhas e colunas o arquivo de treino possui
         
    testeCSV = (float**) malloc (linTeste*(sizeof(float *))); // aloca as linhas da matriz
    for (i=0; i<linTeste;i++){
@@ -225,11 +225,11 @@ for(posi=0;posi<(x-3);posi++){
 
 	for(pposi=0;pposi<linTeste;pposi++){
 	i=0;
-	ordena(resultadoCalculo.calculo[pposi], i, (linTreino-1),resultadoCalculo.rotulo[pposi] );
+	ordena(resultadoCalculo.calculo[pposi], i, (linTreino-1),resultadoCalculo.rotulo[pposi] ); // ordena os vetores contendo os resultados dos cálculos e os rótulos correspondentes
 
 	}
-	rotulos = rotulador(resultadoCalculo, k, rotulos, linTeste, linTreino, posi);
-	z = numeroDeRotulos(resultadoCalculo, linTeste, linTreino);
+	rotulos = rotulador(resultadoCalculo, k, rotulos, linTeste, linTreino, posi); // criar um vetor com os rótulos calculados
+	z = numeroDeRotulos(resultadoCalculo, linTeste, linTreino); // diz quantos rótulos diferentes possui
 	confusao = (int**) malloc (z*(sizeof(int *)));  // aloca as linhas da matriz
    for (i=0; i<z;i++){
 
@@ -241,13 +241,13 @@ for(posi=0;posi<(x-3);posi++){
 
 		for(ass=0;ass<z;ass++){
 
-			confusao[as][ass]=0;
+			confusao[as][ass]=0; // zera as possições da matriz confusão para que não haja lixo de memória
 	
 		}
 
 	}
-	comparador (testeCSV, rotulos, linTeste, colTeste, &acuracia, confusao, z);
-	criaArquivo(predicao, &acuracia, confusao, rotulos, posi, z, linTeste);
+	comparador (testeCSV, rotulos, linTeste, colTeste, &acuracia, confusao, z); // compara os rótulos reais com os rótulos gerados pelo algoritmo
+	criaArquivo(predicao, &acuracia, confusao, rotulos, posi, z, linTeste); // cria o arquivo de sáida com os resultados
 /*for(as=0;as<z;as++){	
 
 	for(ass=0;ass<z;ass++){

@@ -4,7 +4,7 @@
 
 #include "knn.h"
 
-void ordena(float *vetor, int posicaoInicio, int posicaoFim, float *rotulo) {
+void ordena(float *vetor, int posicaoInicio, int posicaoFim, float *rotulo) { // foi implementado um merge sort para ordenar os vetores.
 	int i, j, k, metadeTamanho;
 	float *vetorTemp, *rotuloTemp;
 	if(posicaoInicio == posicaoFim){
@@ -72,7 +72,7 @@ float numeroDeRotulos(Resultado resultado, int linTeste, int linTreino){ // cont
 			x = resultado.rotulo[z][y];
 			if(x>v){
 	
-				v = x;
+				v = x; // procura pelo rótulo de maior valor, pois o maior valor dirá quantos rótulos tem
 
 			}
 		}

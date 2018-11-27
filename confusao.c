@@ -12,12 +12,12 @@ void comparador (float **testeCSV, int *rotulos, int linTeste, int colTeste, flo
 		if(rotulos[i]==testeCSV[i][(colTeste-1)]){ // verifica se acertou na predição, ou seja, verifica se o rotulo dado é igual ao rotulo real			
 			
 			*acuracia = *acuracia + 1; // acrescenta mais um aos acertos
-			confusao[(((int)testeCSV[i][(colTeste-1)])-1)][(rotulos[i]-1)] = confusao[(((int)testeCSV[i][(colTeste-1)])-1)][(rotulos[i]-1)] + 1; // //adiciona mais um na posião da matriz confusão, representando acerto na predição
+			confusao[(((int)testeCSV[i][(colTeste-1)])-1)][(rotulos[i]-1)] = confusao[(((int)testeCSV[i][(colTeste-1)])-1)][(rotulos[i]-1)] + 1; //adiciona mais um na posião da matriz confusão, usando os valores dos rotulos como coordenadas, representando acerto na predição
 	
 		}
 		else{
 
-			confusao[(((int)testeCSV[i][(colTeste-1)])-1)][(rotulos[i]-1)] = confusao[(((int)testeCSV[i][(colTeste-1)])-1)][(rotulos[i]-1)] + 1; // adiciona mais um na posião da matriz confusão, porém representa predição errada
+			confusao[(((int)testeCSV[i][(colTeste-1)])-1)][(rotulos[i]-1)] = confusao[(((int)testeCSV[i][(colTeste-1)])-1)][(rotulos[i]-1)] + 1; // adiciona mais um na posião da matriz confusão, usando os valores dos rotulos como coordenadas, porém representa predição errada
 	
 		}
 	
