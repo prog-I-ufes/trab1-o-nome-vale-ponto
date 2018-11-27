@@ -1,3 +1,5 @@
+//biblioteca com as funções necessárias para o trabalho
+
 struct resultado{
 
         float** calculo;

@@ -70,7 +70,7 @@ Resultado calculaKNN(float **dadoTeste, float **dadoTreino, int colTeste, float 
 
                 for(iii=0;iii<linTreino;iii++){
 			
-                        switch(tipo[posi]){
+                        switch(tipo[posi]){ // os caulos utilizam vetores, então são passados coluna por coluna e não a matriz inteira
 
                                 case 'E':
                                         resultadoCalculo.calculo[ii][iii] = euclidiana(dadoTeste[ii], dadoTreino[iii], colTeste);

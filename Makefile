@@ -1,7 +1,7 @@
 all: trab
 
 trab: trab1.o distancia.o manipula.o confusao.o criaArquivo.o
-	gcc trab1.o distancia.o manipula.o confusao.o criaArquivo.o -o trabalho -lm
+	gcc trab1.o distancia.o manipula.o confusao.o criaArquivo.o -o trab1 -lm
 
 trab1.o: trab1.c
 	gcc -c trab1.c -lm -g
@@ -19,7 +19,7 @@ criaArquivo.o: criaArquivo.c knn.h
 	gcc -c criaArquivo.c -g
 
 val:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./trabalho
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./trab1
 
 clean:
 	rm *.o
